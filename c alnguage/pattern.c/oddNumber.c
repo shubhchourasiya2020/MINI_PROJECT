@@ -1,0 +1,11 @@
+#include<stdio.h>
+int main(){
+    int n;
+    printf("Enter the number : ");
+    scanf("/n%d",n);
+    for (int i=1;i<=n;i++){
+        for(int j =1;j<=n;j++){
+            printf("%d",(2*n-1));
+        }
+    }
+} 

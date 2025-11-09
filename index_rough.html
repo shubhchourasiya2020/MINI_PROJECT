@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-image: url(blue.jpg);
+             background-repeat: no-repeat;
+            background-size: cover;
+            display:flex;
+            align-items:center;
+            justify-content: center;
+            height: 100vh;
+        }
+        
+        .div1{
+            display:flex;
+            align-items:center;
+            justify-content: center;
+            background: transparent;
+            box-shadow: inset 0px 0px 15px 2px rgb(33, 31, 31),
+                        0px 0px 15px 2px rgb(33, 31, 31)
+            ;
+            flex-direction: column;
+            width:1000px;
+            height: 1500px;
+            border-radius: 5px;
+           
+
+        }
+        h1{
+            font-size: 50px;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
+        button{
+            color: black;
+        background-color: rgb(149, 149, 206);
+        width: 100px;
+        padding: 6px;
+
+        }
+        button:hover{
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    
+     <div class ="div1">
+        <h1>LOGIN PAGE</h1>   
+        <form>
+            <lable>
+                <p>Enter First name</p>
+                <input type="text">
+            </lable>
+            <lable>
+                <p>Enter second name</p>
+                <input type="text">
+            </lable>
+            <lable>
+                <p>Enter E-mail</p>
+                <input type="email">
+            </lable>
+            <label>
+                <p>Enter Mobile Number</p>
+                <input type="number">
+            </label>
+            <br>
+            <br>
+            <button type="login">LOGIN</button>
+        </form>
+    </div>
+    
+    
+</body>
+</html>

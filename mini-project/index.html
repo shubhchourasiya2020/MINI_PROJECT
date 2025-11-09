@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Performance Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</head>
+<body>
+
+  <header>
+    <div class="logo">STUDENT PERFORMANCE TRACKER</div>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Dashboard</a></li>
+        <li><a href="#">AI Scheduler</a></li>
+        <li><a href="#">Performance</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropbtn">More ▾</a>
+          <div class="dropdown-content">
+            <a href="#">Tasks</a>
+            <a href="#">Reports</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    <div class="login-btn">
+      <a href="#" class="btn">Login</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Smarter Way to <span>Track Your Academic Progress</span></h1>
+      <p>AI-powered performance tracker that helps students plan, analyze, and achieve better results.</p>
+      <div class="buttons">
+        <a href="#" class="btn-primary">Get Started</a>
+        <a href="#" class="btn-outline">Learn More</a>
+      </div>
+    </div>
+    <div class="hero-image">
+      <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_w51pcehl.json" background="transparent" speed="1" style="width: 400px; height: 400px;" loop autoplay></lottie-player>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>What Makes It <span>Smart</span></h2>
+    <p class="subtitle">Powerful AI-driven tools that help students study smarter, not harder.</p>
+
+    <div class="carousel-container" data-aos="fade-up">
+      <button class="prev-btn">❮</button>
+      <div class="carousel">
+        <div class="feature-card">
+          <div class="icon-container">
+            <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_touohxv0.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          <h3>AI Timetable Generator</h3>
+          <p>Automatically builds efficient study plans based on your subjects, deadlines, and availability.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon-container">
+            <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_u4yrau.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          <h3>Performance Analytics</h3>
+          <p>Visualize your progress with smart charts, identify strengths, and receive AI-powered insights.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon-container">
+            <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_2glqweqs.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          <h3>Task Manager</h3>
+          <p>Plan your day with AI and manual task suggestions to boost productivity effortlessly.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon-container">
+            <lottie-player src="https://assets1.lottiefiles.com/packages/lf20_lk80fpsm.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          <h3>AI Insights</h3>
+          <p>Get real-time data-driven insights to improve your performance and academic consistency.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon-container">
+            <lottie-player src="https://assets7.lottiefiles.com/packages/lf20_vnikrcia.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          <h3>Smart Notifications</h3>
+          <p>AI alerts to remind you of upcoming assignments, classes, and deadlines on time.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="icon-container">
+            <lottie-player src="https://assets2.lottiefiles.com/packages/lf20_j1adxtyb.json" background="transparent" speed="1" loop autoplay></lottie-player>
+          </div>
+          <h3>Unified Dashboard</h3>
+          <p>Access all your academic data, tasks, and insights on a single interactive dashboard.</p>
+        </div>
+      </div>
+      <button class="next-btn">❯</button>
+    </div>
+  </section>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+
+    const carousel = document.querySelector('.carousel');
+    const nextBtn = document.querySelector('.next-btn');
+    const prevBtn = document.querySelector('.prev-btn');
+    let autoSlide;
+
+    nextBtn.addEventListener('click', () => {
+      carousel.scrollBy({ left: 400, behavior: 'smooth' });
+      resetAutoSlide();
+    });
+
+    prevBtn.addEventListener('click', () => {
+      carousel.scrollBy({ left: -400, behavior: 'smooth' });
+      resetAutoSlide();
+    });
+
+    function startAutoSlide() {
+      autoSlide = setInterval(() => {
+        carousel.scrollBy({ left: 400, behavior: 'smooth' });
+      }, 3000);
+    }
+
+    function resetAutoSlide() {
+      clearInterval(autoSlide);
+      startAutoSlide();
+    }
+
+    startAutoSlide();
+  </script>
+</body>
+</html>
+
+<!-- 143 to 505 -->
