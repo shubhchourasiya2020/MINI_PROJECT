@@ -1,0 +1,365 @@
+
+  <!-- Dashboard Start -->
+     <!-- ================= Dashboard Shell =================
+  <main class="dashboard-main" data-aos="fade-up">
+    <!-- Sidebar -->
+    <aside class="dash-sidebar" id="dashSidebar">
+      <div class="sidebar-top">
+        <button id="sidebarToggle" class="icon-btn">☰</button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="side-item active" data-tab="homeTab" title="Dashboard">🏠 <span>Dashboard</span></button>
+        <button class="side-item" data-tab="performanceTab" title="Performance">📈 <span>Performance</span></button>
+        <button class="side-item" data-tab="tasksTab" title="Tasks">✅ <span>Tasks</span></button>
+        <button class="side-item" data-tab="aiTab" title="AI Insights">🤖 <span>AI</span></button>
+        <button class="side-item" data-tab="profileTab" title="Profile">👤 <span>Profile</span></button>
+        <button class="side-item" data-tab="settingsTab" title="Settings">⚙️ <span>Settings</span></button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <small>v1.0 • Student Tracker</small>
+      </div>
+    </aside>
+
+    <!-- Main content area -->
+    <section class="dash-content">
+      <!-- Header / Welcome -->
+      <div class="dash-header" data-aos="fade-down">
+        <div>
+          <h1>Welcome back, <span class="accent">Shubh</span> 👋</h1>
+          <p class="muted" id="todayDate">—</p>
+        </div>
+        <div class="dash-actions">
+          <button class="btn small" id="openAI">Open AI Tools</button>
+          <button class="btn small" id="downloadReport">Download Report</button>
+        </div>
+      </div>
+
+      <!-- Tabs content container -->
+      <div class="dash-tabs">
+
+        <!-- ======= Home Tab (default) ======= -->
+        <div class="tab-panel active" id="homeTab" data-aos="fade-up">
+          <!-- KPI Cards -->
+          <div class="kpi-row">
+            <div class="kpi-card" data-animate-counter data-value="76">
+              <div class="kpi-icon">🎯</div>
+              <div class="kpi-body">
+                <div class="kpi-number"><span class="count">0</span>%</div>
+                <div class="kpi-label">Overall Progress</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" data-animate-counter data-value="4">
+              <div class="kpi-icon">⏱️</div>
+              <div class="kpi-body">
+                <div class="kpi-number"><span class="count">0</span> / 5</div>
+                <div class="kpi-label">Hours Today</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" data-animate-counter data-value="6">
+              <div class="kpi-icon">✅</div>
+              <div class="kpi-body">
+                <div class="kpi-number"><span class="count">0</span></div>
+                <div class="kpi-label">Tasks Completed</div>
+              </div>
+            </div>
+
+            <div class="kpi-card" data-animate-counter data-value="2">
+              <div class="kpi-icon">📚</div>
+              <div class="kpi-body">
+                <div class="kpi-number"><span class="count">0</span></div>
+                <div class="kpi-label">Pending Assignments</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Middle: Charts + Tasks preview -->
+          <div class="mid-grid">
+            <div class="card chart-card" data-aos="zoom-in">
+              <h3>Weekly Performance</h3>
+              <canvas id="performanceChart" height="160"></canvas>
+            </div>
+
+            <div class="card tasks-card" data-aos="zoom-in">
+              <div class="card-top">
+                <h3>Today's Tasks</h3>
+                <button class="icon-btn small" id="addTaskBtn">＋</button>
+              </div>
+              <ul class="task-list" id="taskList">
+                <li><label><input type="checkbox" /> Revise DSA — 60 mins</label></li>
+                <li class="done"><label><input type="checkbox" checked /> Read OS notes — 30 mins</label></li>
+                <li><label><input type="checkbox" /> Complete DBMS assignment</label></li>
+                <li><label><input type="checkbox" /> Practice C++ problems</label></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Bottom: AI Insights + Activity timeline -->
+          <div class="bottom-grid">
+            <div class="card ai-insights" data-aos="fade-up">
+              <h3>AI Insights</h3>
+              <div class="insight">
+                <p>🤖 <strong>AI:</strong> You're spending 60% of your time on DSA. Balance with DBMS & OS — try 30 mins extra for DBMS daily.</p>
+              </div>
+              <div class="insight">
+                <p>💡 <strong>Tip:</strong> Short, focused sessions (25-50 mins) with 10 min breaks increase retention.</p>
+              </div>
+            </div>
+
+            <div class="card timeline" data-aos="fade-up">
+              <h3>Today Timeline</h3>
+              <ul class="timeline-list">
+                <li><strong>08:00</strong> — Studied DSA (1 hr)</li>
+                <li><strong>09:30</strong> — Completed OS reading</li>
+                <li><strong>12:30</strong> — Practice session (C++)</li>
+                <li><strong>16:00</strong> — DBMS assignment started</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======= Performance Tab ======= -->
+        <div class="tab-panel" id="performanceTab" data-aos="fade-up">
+          <div class="card full" data-aos="zoom-in">
+            <h3>Subject-wise Progress</h3>
+            <canvas id="subjectChart" height="140"></canvas>
+          </div>
+
+          <div class="card full" data-aos="zoom-in">
+            <h3>Time Allocation (Last 7 days)</h3>
+            <canvas id="timeChart" height="140"></canvas>
+          </div>
+        </div>
+
+        <!-- ======= Tasks Tab ======= -->
+        <div class="tab-panel" id="tasksTab" data-aos="fade-up">
+          <div class="card full">
+            <div class="card-top">
+              <h3>All Tasks</h3>
+              <div>
+                <input id="filterSearch" placeholder="Search tasks..." />
+                <button class="btn small" id="clearCompleted">Clear Completed</button>
+              </div>
+            </div>
+
+            <ul class="full-task-list" id="fullTaskList">
+              <!-- sample tasks -->
+              <li><label><input type="checkbox" /> Finish lab report (DBMS)</label></li>
+              <li><label><input type="checkbox" /> Revise lecture notes (AI)</label></li>
+              <li><label><input type="checkbox" /> Mock test practice (DSA)</label></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- ======= AI Tab ======= -->
+        <div class="tab-panel" id="aiTab" data-aos="fade-up">
+          <div class="card full">
+            <h3>Chat with AI</h3>
+            <div class="chat-window" id="chatWindow">
+              <div class="chat-message ai">Hi Shubh — ask me about your study plan!</div>
+            </div>
+
+            <div class="chat-input">
+              <input id="chatInput" placeholder="Ask AI (simulated) — e.g. 'How should I prepare for OS exam?'" />
+              <button class="btn small" id="sendChat">Send</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ======= Profile Tab (placeholder) ======= -->
+        <div class="tab-panel" id="profileTab" data-aos="fade-up">
+          <div class="card full">
+            <h3>Your Profile</h3>
+            <p class="muted">Name: Shubh Chourasiya</p>
+            <p class="muted">Course: B.Tech CSE (AI/ML)</p>
+            <p class="muted">Semester: 5</p>
+            <button class="btn small">Edit Profile</button>
+          </div>
+        </div>
+
+        <!-- ======= Settings Tab (placeholder) ======= -->
+        <div class="tab-panel" id="settingsTab" data-aos="fade-up">
+          <div class="card full">
+            <h3>Settings</h3>
+            <label class="setting-row">Theme
+              <select>
+                <option>Dark (default)</option>
+                <option>Light (not implemented)</option>
+              </select>
+            </label>
+            <label class="setting-row">Notifications
+              <select>
+                <option>On</option>
+                <option>Off</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- AOS -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+  <!-- =============== Dashboard JS =============== -->
+  <script>
+    AOS.init({ duration: 700, once: true });
+
+    // Date display
+    const todayDate = document.getElementById('todayDate');
+    const d = new Date();
+    const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    todayDate.textContent = d.toLocaleDateString('en-US', opts);
+
+    // Sidebar tab switching
+    const sideItems = document.querySelectorAll('.side-item');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    sideItems.forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelector('.side-item.active').classList.remove('active');
+        btn.classList.add('active');
+
+        document.querySelector('.tab-panel.active').classList.remove('active');
+        const target = document.getElementById(btn.dataset.tab);
+        if (target) target.classList.add('active');
+      });
+    });
+
+    // KPIs counter animation
+    function animateCounters() {
+      const counters = document.querySelectorAll('[data-animate-counter]');
+      counters.forEach(card => {
+        const val = parseInt(card.dataset.value || 0, 10);
+        const el = card.querySelector('.count');
+        let start = 0;
+        const dur = 900;
+        const step = Math.ceil(val / (dur / 16));
+        const t = setInterval(() => {
+          start += step;
+          if (start >= val) {
+            start = val;
+            clearInterval(t);
+          }
+          el.textContent = start;
+        }, 16);
+      });
+    }
+    animateCounters();
+
+    // Simple task interactions
+    document.querySelectorAll('.task-list input[type="checkbox"]').forEach(chk => {
+      chk.addEventListener('change', (e) => {
+        const li = e.target.closest('li');
+        if (e.target.checked) li.classList.add('done');
+        else li.classList.remove('done');
+
+        // Update tasks completed KPI (quick simulated update)
+        const completed = document.querySelectorAll('.task-list input:checked').length;
+        const kpi = document.querySelector('[data-animate-counter][data-value="6"] .count');
+        if (kpi) kpi.textContent = completed;
+      });
+    });
+
+    // Add task modal simulation (simple prompt)
+    document.getElementById('addTaskBtn').addEventListener('click', () => {
+      const task = prompt('Add task (e.g. Revise OS notes — 30 mins)');
+      if (task) {
+        const ul = document.getElementById('taskList');
+        const li = document.createElement('li');
+        li.innerHTML = '<label><input type="checkbox" /> ' + task + '</label>';
+        ul.prepend(li);
+      }
+    });
+
+    // Clear completed tasks
+    document.getElementById('clearCompleted')?.addEventListener('click', () => {
+      document.querySelectorAll('#fullTaskList li input:checked').forEach(chk => {
+        chk.closest('li').remove();
+      });
+    });
+
+    // Chat (simulated)
+    document.getElementById('sendChat').addEventListener('click', () => {
+      const input = document.getElementById('chatInput');
+      const txt = input.value.trim();
+      if (!txt) return;
+      const chat = document.getElementById('chatWindow');
+      const userBubble = document.createElement('div');
+      userBubble.className = 'chat-message user';
+      userBubble.textContent = txt;
+      chat.appendChild(userBubble);
+      input.value = '';
+      chat.scrollTop = chat.scrollHeight;
+
+      // simulated typing + reply
+      const aiReply = document.createElement('div');
+      aiReply.className = 'chat-message ai typing';
+      aiReply.textContent = '...';
+      chat.appendChild(aiReply);
+      chat.scrollTop = chat.scrollHeight;
+
+      setTimeout(() => {
+        aiReply.classList.remove('typing');
+        aiReply.textContent = "AI Suggestion: Try splitting your DSA sessions into 45-min focused blocks. Mix problem solving with revision.";
+        chat.scrollTop = chat.scrollHeight;
+      }, 900);
+    });
+
+    // Sidebar collapse
+    document.getElementById('sidebarToggle').addEventListener('click', () => {
+      document.getElementById('dashSidebar').classList.toggle('collapsed');
+    });
+
+    // Chart.js sample charts
+    const perfCtx = document.getElementById('performanceChart')?.getContext('2d');
+    if (perfCtx) {
+      new Chart(perfCtx, {
+        type: 'line',
+        data: {
+          labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+          datasets: [{
+            label: 'Performance %',
+            data: [62, 65, 68, 72, 75, 74, 76],
+            fill: true,
+            tension: 0.35,
+            borderWidth: 2,
+            pointRadius: 3,
+            backgroundColor: 'rgba(124,92,255,0.12)',
+            borderColor: 'rgba(156,140,255,0.95)'
+          }]
+        },
+        options: { responsive: true, plugins:{legend:{display:false}}}
+      });
+    }
+
+    const subjectCtx = document.getElementById('subjectChart')?.getContext('2d');
+    if (subjectCtx) {
+      new Chart(subjectCtx, {
+        type: 'bar',
+        data: {
+          labels: ['DSA','DBMS','OS','Maths','AI'],
+          datasets: [{ data: [75, 60, 70, 68, 62], backgroundColor: 'rgba(124,92,255,0.7)' }]
+        },
+        options: { responsive: true, plugins:{legend:{display:false}}}
+      });
+    }
+
+    const timeCtx = document.getElementById('timeChart')?.getContext('2d');
+    if (timeCtx) {
+      new Chart(timeCtx, {
+        type: 'pie',
+        data: {
+          labels: ['DSA','DBMS','OS','Maths','AI'],
+          datasets: [{ data: [40,15,15,20,10], backgroundColor: ['rgba(156,140,255,0.9)','rgba(124,92,255,0.8)','rgba(94,142,255,0.7)','rgba(56,200,190,0.6)','rgba(255,200,100,0.6)'] }]
+        },
+        options: { responsive: true, plugins:{legend:{position:'bottom'}}}
+      });
+    }
+  </script> -->
+   <!-- Dashboard End -->
