@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Performance Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #023e1a, #3e0077);
+      background-size: 300% 300%;
+      animation: gradientShift 10s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .container {
+      display: flex;
+      gap: 40px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+    }
+
+    .chart-box {
+      width: 450px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #d1c4e9;
+    }
+
+    .toggle-btn {
+      background-color: #5e00b8;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background 0.3s;
+    }
+
+    .toggle-btn:hover {
+      background-color: #1db954;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Left: To-Do Performance Pie Chart -->
+    <div class="chart-box">
+      <h2>To-Do Task Performance</h2>
+      <canvas id="pieChart"></canvas>
+    </div>
+
+    <!-- Right: Weekly / Monthly Graph -->
+    <div class="chart-box">
+      <h2 id="graphTitle">Weekly Progress</h2>
+      <canvas id="lineChart"></canvas>
+      <button class="toggle-btn" onclick="toggleGraph()">Switch to Monthly</button>
+    </div>
+  </div>
+
+  <script>
+    // ===== PIE CHART (Task Performance) =====
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    const pieChart = new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+        labels: ['Completed', 'Pending', 'Missed'],
+        datasets: [{
+          data: [12, 5, 3],
+          backgroundColor: ['#00c853', '#ffeb3b', '#d50000'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: {
+          legend: { labels: { color: '#fff' } }
+        }
+      }
+    });
+
+    // ===== LINE CHART (Weekly / Monthly Progress) =====
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    const weeklyData = [70, 80, 75, 85, 90, 95, 88];
+    const monthlyData = [60, 68, 72, 80, 83, 85, 90, 93, 95, 96, 98, 99];
+
+    let currentMode = 'weekly';
+    const lineChart = new Chart(lineCtx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Performance (%)',
+          data: weeklyData,
+          borderColor: '#00ff88',
+          backgroundColor: 'rgba(0, 255, 136, 0.2)',
+          fill: true,
+          tension: 0.4
+        }]
+      },
+      options: {
+        scales: {
+          x: { ticks: { color: '#fff' } },
+          y: { ticks: { color: '#fff' } }
+        },
+        plugins: {
+          legend: { labels: { color: '#fff' } }
+        }
+      }
+    });
+
+    // ===== TOGGLE GRAPH =====
+    function toggleGraph() {
+      if (currentMode === 'weekly') {
+        lineChart.data.labels = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5', 'Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11', 'Week 12'];
+        lineChart.data.datasets[0].data = monthlyData;
+        document.getElementById('graphTitle').innerText = 'Monthly Progress';
+        currentMode = 'monthly';
+      } else {
+        lineChart.data.labels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        lineChart.data.datasets[0].data = weeklyData;
+        document.getElementById('graphTitle').innerText = 'Weekly Progress';
+        currentMode = 'weekly';
+      }
+      lineChart.update();
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Syllabus Upload Portal</title>
+  <style>
+    /* ===== GLOBAL STYLES ===== */
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      color: #e6f5e6;
+      background: linear-gradient(135deg, #062f13, #310058);
+      overflow-y: auto;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ===== BLURRED BACKGROUND IMAGE ===== */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1500&q=80");
+      /* Books, clocks, stationery theme */
+      background-size: cover;
+      background-position: center;
+      filter: blur(9px) brightness(0.5);
+      z-index: -3;
+    }
+
+    /* ===== FLOATING PARTICLES ===== */
+    .bubble {
+      position: fixed;
+      border-radius: 50%;
+      background: rgba(190, 255, 200, 0.15);
+      animation: floatUp 25s linear infinite;
+      z-index: -2;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) scale(0.5); opacity: 0.5; }
+      50% { opacity: 0.9; }
+      100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+    }
+
+    /* ===== PAGE HEADER ===== */
+    header {
+      text-align: center;
+      padding: 60px 20px 30px;
+    }
+
+    header h1 {
+      font-size: 2.6em;
+      color: #c080ff;
+      text-shadow: 0 0 15px #ad50ff;
+    }
+
+    header p {
+      color: #9dfb9d;
+      font-size: 1.1em;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      background: rgba(10, 25, 10, 0.75);
+      margin: 30px auto;
+      width: 90%;
+      max-width: 700px;
+      border-radius: 16px;
+      padding: 30px 40px;
+      box-shadow: 0 4px 25px rgba(115, 0, 172, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    h2 {
+      text-align: center;
+      color: #b86fff;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 8px;
+      color: #a4f2a4;
+    }
+
+    select, input[type="text"], input[type="file"], input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 15px;
+      font-size: 16px;
+      background: rgba(255,255,255,0.1);
+      color: #0f0f0f;
+    }
+
+    input[type="file"], input[type="number"] {
+      cursor: pointer;
+    }
+
+    button {
+      display: block;
+      margin: 15px auto;
+      background-color: #6500a8;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #008e3c;
+      box-shadow: 0 0 15px #00ff77;
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      margin: 40px 0;
+      color: #c7f2c7;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(#7a1fcf, #0c4a0c);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating particle effect -->
+  <script>
+    for (let i = 0; i < 25; i++) {
+      const bubble = document.createElement('div');
+      const size = Math.random() * 80 + 20;
+      bubble.classList.add('bubble');
+      bubble.style.width = `${size}px`;
+      bubble.style.height = `${size}px`;
+      bubble.style.left = `${Math.random() * 100}%`;
+      bubble.style.animationDuration = `${15 + Math.random() * 15}s`;
+      bubble.style.background = `radial-gradient(circle at center, rgba(${50 + Math.random()*150}, ${120 + Math.random()*120}, 255, 0.25), transparent)`;
+      document.body.appendChild(bubble);
+    }
+  </script>
+
+  <!-- HEADER SECTION -->
+  <header>
+    <h1>📚 Academic Syllabus Upload Portal</h1>
+    <p>Organize your subjects, upload syllabi, and plan your completion schedule effectively.</p>
+  </header>
+
+  <!-- MAIN FORM CONTAINERS -->
+  <div class="container">
+    <h2>Step 1️⃣: Choose Number of Subjects</h2>
+    <label for="subjectCount">Select number of subjects:</label>
+    <select id="subjectCount">
+      <option value="0">-- Select --</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+
+    <div id="nameContainer"></div>
+    <button id="nextBtn" style="display:none;">Next ➡</button>
+  </div>
+
+  <div class="container">
+    <h2>Step 2️⃣: Upload Syllabi</h2>
+    <div id="uploadContainer"></div>
+    <button id="submitBtn" style="display:none;">Submit ✅</button>
+  </div>
+
+  <!-- NEW SECTION FOR TIME PERIOD -->
+  <div class="container" id="timeContainer" style="display:none;">
+    <h2>Step 3️⃣: Set Completion Time</h2>
+    <label for="timePeriod">Enter number of days to complete your syllabus:</label>
+    <input type="number" id="timePeriod" placeholder="e.g., 30" min="1">
+    <button id="finishBtn">Finish 🏁</button>
+  </div>
+
+  
+
+  <script>
+    const subjectCount = document.getElementById('subjectCount');
+    const nameContainer = document.getElementById('nameContainer');
+    const uploadContainer = document.getElementById('uploadContainer');
+    const nextBtn = document.getElementById('nextBtn');
+    const submitBtn = document.getElementById('submitBtn');
+    const timeContainer = document.getElementById('timeContainer');
+    const finishBtn = document.getElementById('finishBtn');
+    const timePeriod = document.getElementById('timePeriod');
+
+    let subjectNames = [];
+
+    // STEP 1: Select number of subjects
+    subjectCount.addEventListener('change', () => {
+      const count = parseInt(subjectCount.value);
+      nameContainer.innerHTML = '';
+      uploadContainer.innerHTML = '';
+      submitBtn.style.display = 'none';
+      timeContainer.style.display = 'none';
+      subjectNames = [];
+
+      if (count > 0) {
+        for (let i = 1; i <= count; i++) {
+          const label = document.createElement('label');
+          label.textContent = `Enter name for Subject ${i}:`;
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.placeholder = `Subject ${i} Name`;
+          input.required = true;
+
+          nameContainer.appendChild(label);
+          nameContainer.appendChild(input);
+        }
+        nextBtn.style.display = 'block';
+      } else {
+        nextBtn.style.display = 'none';
+      }
+    });
+
+    // STEP 2: Enter subject names
+    nextBtn.addEventListener('click', () => {
+      const inputs = nameContainer.querySelectorAll('input[type="text"]');
+      subjectNames = [];
+      let valid = true;
+
+      inputs.forEach((input, index) => {
+        if (input.value.trim() === '') {
+          alert(`⚠ Please enter a name for Subject ${index + 1}`);
+          valid = false;
+        } else {
+          subjectNames.push(input.value.trim());
+        }
+      });
+
+      if (!valid) return;
+
+      // Generate upload fields
+      uploadContainer.innerHTML = '';
+      subjectNames.forEach((name) => {
+        const label = document.createElement('label');
+        label.textContent = `Upload syllabus for "${name}":`;
+
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = '.pdf,.doc,.docx,.txt';
+
+        uploadContainer.appendChild(label);
+        uploadContainer.appendChild(fileInput);
+      });
+
+      submitBtn.style.display = 'block';
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    });
+
+    // STEP 3: Validate uploads
+    submitBtn.addEventListener('click', () => {
+      const fileInputs = uploadContainer.querySelectorAll('input[type="file"]');
+      let allUploaded = true;
+
+      fileInputs.forEach((input, index) => {
+        if (!input.files.length) {
+          alert(`⚠ Please upload a file for "${subjectNames[index]}"`);
+          allUploaded = false;
+        }
+      });
+
+      if (allUploaded) {
+        alert('✅ All syllabi uploaded successfully!');
+        timeContainer.style.display = 'block';
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      }
+    });
+
+    // STEP 4: Enter time period
+    finishBtn.addEventListener('click', () => {
+      const days = parseInt(timePeriod.value);
+      if (isNaN(days) || days <= 0) {
+        alert('⚠ Please enter a valid number of days!');
+        return;
+      }
+      alert(`🎯 Great! You've planned to complete your syllabus in ${days} days. Stay consistent and good luck!`);
+    });
+  </script>
+</body>
+</html>
