@@ -5,28 +5,38 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Multi-Week Adaptive Planner</title>
 <style>
-  /* --- Styling: dark green + purple theme --- */
+  /* --- Animated Gradient Background + Floating Bubbles --- */
   body {
     margin: 0;
     font-family: "Poppins", sans-serif;
     color: #e6f5e6;
-    background: linear-gradient(135deg, #062f13, #310058);
     overflow-y: auto;
     min-height: 100vh;
     position: relative;
+
+    /* 🎨 Animated gradient like Student Performance Tracker */
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364, #3e0077, #1b0034);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
   }
 
+  /* Subtle transparent overlay for depth */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
-    background-image: url("https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1500&q=80");
-    background-size: cover;
-    background-position: center;
-    filter: blur(9px) brightness(0.5);
+    background: rgba(0, 0, 0, 0.25);
     z-index: -3;
   }
 
+  /* Gradient motion keyframes */
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* ===== FLOATING PARTICLES ===== */
   .bubble {
     position: fixed;
     border-radius: 50%;
@@ -41,6 +51,7 @@
     100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
   }
 
+  /* ===== HEADER ===== */
   header {
     text-align: center;
     padding: 60px 20px 20px;
@@ -49,13 +60,14 @@
   header h1 {
     font-size: 2.5em;
     color: #c080ff;
-    text-shadow: 0 0 15px #ad50ff;
+    /* text-shadow: 0 0 15px #ad50ff; */
   }
 
   header p {
     color: #9dfb9d;
   }
 
+  /* ===== MAIN CONTAINER ===== */
   .container {
     width: 90%;
     max-width: 1100px;
@@ -83,6 +95,48 @@
     color: white;
     margin: 5px;
   }
+  
+
+
+
+
+
+
+
+
+  /* ===== Fix dropdown menu background and text color ===== */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: rgba(15, 15, 15, 0.85);
+  color: #e6f5e6;
+  border: 1px solid rgba(156,140,255,0.3);
+  padding-right: 35px;
+  cursor: pointer;
+  background-image: linear-gradient(135deg, #1b0034, #3e0077);
+  background-size: 200% 200%;
+  transition: 0.3s ease;
+}
+
+select:hover,
+select:focus {
+  background-position: 100% 0;
+  box-shadow: 0 0 10px rgba(124, 92, 255, 0.4);
+  outline: none;
+}
+
+/* Dropdown options (fix for light default system colors) */
+option {
+  background-color: #1b0034;
+  color: #e6f5e6;
+}
+
+
+
+
+
+
 
   button {
     background-color: #6500a8;
@@ -127,21 +181,21 @@
 
 <script>
   // Floating bubbles
-  for (let i = 0; i < 20; i++) {
-    const b = document.createElement("div");
-    const s = 30 + Math.random() * 60;
-    b.classList.add("bubble");
-    b.style.width = `${s}px`;
-    b.style.height = `${s}px`;
-    b.style.left = `${Math.random() * 100}%`;
-    b.style.animationDuration = `${15 + Math.random() * 20}s`;
-    document.body.appendChild(b);
-  }
+  // for (let i = 0; i < 20; i++) {
+  //   const b = document.createElement("div");
+  //   const s = 30 + Math.random() * 60;
+  //   b.classList.add("bubble");
+  //   b.style.width = `${s}px`;
+  //   b.style.height = `${s}px`;
+  //   b.style.left = `${Math.random() * 100}%`;
+  //   b.style.animationDuration = `${15 + Math.random() * 20}s`;
+  //   document.body.appendChild(b);
+  // }
 </script>
 
 <header>
   <h1>📆 Multi-Week Adaptive Planner</h1>
-  <p>Next week now starts right after the previous one ends — day by day! 🌿💜</p>
+  <p>Next week now starts right after the previous one ends — day by day! 💜</p>
 </header>
 
 <div class="container" id="setupContainer">
@@ -257,16 +311,13 @@
     const percent = Math.round((done / total) * 100);
     alert(`Week ${currentWeek} Complete! 🎯 You achieved ${percent}% this week.`);
 
-    // Find last assigned day (last day in current week)
     const lastDayIndex = (startDayIndex + 6) % 7;
     const nextStartIndex = (lastDayIndex + 1) % 7;
 
-    // Advance the current date by exactly 7 days (so next week starts next day)
     currentDate = addDays(currentDate, 7);
     startDayIndex = nextStartIndex;
     currentWeek++;
 
-    // Check if any topics left
     const remaining = Object.values(topicStatus)
       .flatMap((obj) => Object.values(obj))
       .filter((s) => s === "pending").length;
