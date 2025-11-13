@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mini Project - To‑Do List</title>
+<style>
+  /* Color theme same as previous mini‑project */
+  :root {
+    --bg-1: #0f2027;
+    --bg-2: #203a43;
+    --bg-3: #2c5364;
+    --glass: rgba(255, 255, 255, 0.08);
+    --accent1: #9c8cff;
+    --accent2: #7b61ff;
+    --text-light: #ffffff;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-light);
+  }
+
+  .todo-container {
+    width: 100%;
+    max-width: 500px;
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: var(--accent1);
+  }
+
+  .input-section {
+    display: flex;
+    gap: 10px;
+  }
+
+  .input-section input {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+  }
+
+  .input-section button {
+    background: linear-gradient(45deg, var(--accent1), var(--accent2));
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    color: var(--text-light);
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .input-section button:hover {
+    transform: scale(1.05);
+  }
+
+  ul {
+    list-style: none;
+    margin-top: 20px;
+  }
+
+  li {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s ease;
+  }
+
+  li.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  .actions button {
+    margin-left: 10px;
+    background: transparent;
+    border: 1px solid var(--accent1);
+    padding: 5px 10px;
+    border-radius: 6px;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .actions button:hover {
+    background: var(--accent1);
+  }
+</style>
+</head>
+<body>
+  <div class="todo-container">
+    <h2>To‑Do List</h2>
+
+    <div class="input-section">
+      <input type="text" id="taskInput" placeholder="Enter a new task..." />
+      <input type="date" id="deadlineInput" />
+      <button onclick="addTask()">Add</button>
+    </div>
+
+    <ul id="taskList"></ul>
+  </div>
+
+<script>
+  function addTask() {
+    const input = document.getElementById("taskInput");
+    const taskText = input.value.trim();
+    const deadline = document.getElementById("deadlineInput").value;
+
+    if (taskText === "") return;
+
+    const li = document.createElement("li");
+
+    li.innerHTML = `
+      <span onclick=\"toggleComplete(this)\">${taskText}</span>
+      <small style=\"display:block; opacity:0.8; margin-top:4px; font-size:12px; color:var(--accent1)\">Deadline: ${deadline || "Not set"}</small>
+      <div class=\"actions\">
+        <button onclick=\"editTask(this)\">Edit</button>
+        <button onclick=\"deleteTask(this)\">Delete</button>
+      </div>
+    `;
+
+    document.getElementById("taskList").appendChild(li);
+    input.value = "";
+  }
+
+  function toggleComplete(task) {
+    task.parentElement.classList.toggle("completed");
+  }
+
+  function deleteTask(btn) {
+    btn.parentElement.parentElement.remove();
+  }
+
+  function editTask(btn) {
+    const li = btn.parentElement.parentElement;
+    const currentText = li.querySelector("span").innerText;
+    const newText = prompt("Edit your task:", currentText);
+
+    if (newText !== null && newText.trim() !== "") {
+      li.querySelector("span").innerText = newText;
+    }
+  }
+</script>
+</body>
+</html>

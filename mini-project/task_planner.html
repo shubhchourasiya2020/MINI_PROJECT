@@ -6,115 +6,102 @@
 <title>Multi-Week Adaptive Planner</title>
 <style>
   /* --- Animated Gradient Background + Floating Bubbles --- */
-  body {
-    margin: 0;
-    font-family: "Poppins", sans-serif;
-    color: #e6f5e6;
-    overflow-y: auto;
-    min-height: 100vh;
-    position: relative;
+ /* ================= GLOBAL ================= */
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  color: #e8f1f2;
+  overflow-y: auto;
+  min-height: 100vh;
+  position: relative;
 
-    /* 🎨 Animated gradient like Student Performance Tracker */
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364, #3e0077, #1b0034);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-  }
+  /* Updated to match the website theme */
+  /* background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); */
+  background: linear-gradient(#213D47, #1D2F44);
 
-  /* Subtle transparent overlay for depth */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.25);
-    z-index: -3;
-  }
+  background-size: 400% 400%;
+}
 
-  /* Gradient motion keyframes */
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  /* ===== FLOATING PARTICLES ===== */
-  .bubble {
-    position: fixed;
-    border-radius: 50%;
-    background: rgba(190, 255, 200, 0.15);
-    animation: floatUp 25s linear infinite;
-    z-index: -2;
-  }
-
-  @keyframes floatUp {
-    0% { transform: translateY(100vh) scale(0.5); opacity: 0.5; }
-    50% { opacity: 0.9; }
-    100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
-  }
-
-  /* ===== HEADER ===== */
-  header {
-    text-align: center;
-    padding: 60px 20px 20px;
-  }
-
-  header h1 {
-    font-size: 2.5em;
-    color: #c080ff;
-    /* text-shadow: 0 0 15px #ad50ff; */
-  }
-
-  header p {
-    color: #9dfb9d;
-  }
-
-  /* ===== MAIN CONTAINER ===== */
-  .container {
-    width: 90%;
-    max-width: 1100px;
-    margin: 40px auto;
-    background: rgba(10, 25, 10, 0.75);
-    border-radius: 16px;
-    padding: 30px 40px;
-    box-shadow: 0 4px 25px rgba(115, 0, 172, 0.5);
-    backdrop-filter: blur(10px);
-  }
-
-  h2 {
-    text-align: center;
-    color: #b86fff;
-    margin-bottom: 20px;
-  }
-
-  label { color: #a4f2a4; }
-
-  input, select {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.1);
-    color: white;
-    margin: 5px;
-  }
-  
+/* Keep depth overlay consistent */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: -3;
+}
 
 
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0.5); opacity: 0.5; }
+  50% { opacity: 0.9; }
+  100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+}
 
 
+/* ================= HEADER ================= */
+header {
+  text-align: center;
+  padding: 60px 20px 20px;
+}
+
+header h1 {
+  font-size: 2.5em;
+
+  /* Matched to global accent color */
+  color: #9c8cff;
+}
+
+header p {
+  color: #b0bec5;
+}
 
 
+/* ================= MAIN CONTAINER ================= */
+.container {
+  width: 90%;
+  max-width: 1100px;
+  margin: 40px auto;
+
+  /* Updated to match glassmorphism from other pages */
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  padding: 30px 40px;
+  box-shadow: 0 4px 25px rgba(124, 92, 255, 0.25);
+  backdrop-filter: blur(10px);
+}
+
+h2 {
+  text-align: center;
+  color: #9c8cff;
+  margin-bottom: 20px;
+}
+
+label {
+  color: #d3dae3;
+}
+
+input,
+select {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  color: #e8f1f2;
+  margin: 5px;
+}
 
 
-  /* ===== Fix dropdown menu background and text color ===== */
+/* ================= SELECT DROPDOWN FIX ================= */
 select {
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: rgba(15, 15, 15, 0.85);
-  color: #e6f5e6;
+  background-color: rgba(15, 25, 40, 0.85);
+  color: #e8f1f2;
   border: 1px solid rgba(156,140,255,0.3);
   padding-right: 35px;
   cursor: pointer;
-  background-image: linear-gradient(135deg, #1b0034, #3e0077);
+
+  background-image: linear-gradient(135deg, #1a1f3b, #2b335b);
   background-size: 200% 200%;
   transition: 0.3s ease;
 }
@@ -126,55 +113,80 @@ select:focus {
   outline: none;
 }
 
-/* Dropdown options (fix for light default system colors) */
 option {
-  background-color: #1b0034;
-  color: #e6f5e6;
+  background-color: #1a1f3b;
+  color: #e8f1f2;
 }
 
 
+/* ================= BUTTON ================= */
+button {
+  background: linear-gradient(135deg, #9c8cff, #7b61ff);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 15px rgba(124,92,255,0.3);
+}
+
+button:hover {
+  background: linear-gradient(135deg, #7b61ff, #9c8cff);
+  box-shadow: 0 0 18px rgba(156,140,255,0.6);
+  transform: scale(1.05);
+}
 
 
+/* ================= WEEK GRID ================= */
+.week-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
 
+.day-card {
+  background: rgba(255, 255, 255, 0.08);
 
+  /* Accent color matched */
+  border-left: 6px solid #9c8cff;
 
-  button {
-    background-color: #6500a8;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+  border-radius: 10px;
+  padding: 16px;
+}
 
-  button:hover {
-    background-color: #008e3c;
-    box-shadow: 0 0 10px #00ff77;
-    transform: scale(1.05);
-  }
+.day-card h3 { 
+  color: #7b61ff;
+  margin-bottom: 10px;
+}
 
-  .week-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-  }
+.day-card small { color: #cfd8dc; }
 
-  .day-card {
-    background: rgba(255, 255, 255, 0.1);
-    border-left: 6px solid #a455f2;
-    border-radius: 10px;
-    padding: 16px;
-  }
+ul { list-style: none; padding-left: 0; }
 
-  .day-card h3 { color: #9dfb9d; margin-bottom: 10px; }
-  .day-card small { color: #ccc; }
+li { 
+  margin: 6px 0; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+}
 
-  ul { list-style: none; padding-left: 0; }
-  li { margin: 6px 0; display: flex; justify-content: space-between; align-items: center; }
-  input[type="checkbox"] { transform: scale(1.2); accent-color: #a455f2; }
-  .completed { text-decoration: line-through; opacity: 0.6; }
-  footer { text-align: center; color: #c7f2c7; margin: 40px 0; }
+input[type="checkbox"] { 
+  transform: scale(1.2); 
+  accent-color: #9c8cff; 
+}
+
+.completed { 
+  text-decoration: line-through; 
+  opacity: 0.6; 
+}
+
+footer { 
+  text-align: center; 
+  color: #cfd8dc;
+  margin: 40px 0; 
+}
+
 </style>
 </head>
 <body>
@@ -202,16 +214,16 @@ option {
   <button id="nextWeekBtn">Finish Week ➡ Generate Next Week</button>
 </div>
 
-<footer>Adaptive Study Planner 🔨🤖🔧 | Continues day by day 🌿💜</footer>
+
 
 <script>
   /* === Subjects and topics === */
   const subjects = {
-    Mathematics: ["Algebra", "Geometry", "Trigonometry", "Calculus", "Probability"],
-    Physics: ["Motion", "Force", "Energy", "Waves", "Electricity"],
-    Chemistry: ["Atoms", "Reactions", "Periodic Table", "Bonds", "Acids"],
-    Biology: ["Cells", "Genetics", "Reproduction", "Plants", "Evolution"],
-    "Computer Science": ["HTML", "CSS", "JavaScript", "Data Structures", "Algorithms"]
+    Mathematics: ["Complex Number", "Linaer Inequalities", "Permutation and Combination", "Binomial Theorem", "Sequence and Series"],
+    // Physics: ["Motion", "Force", "Energy", "Waves", "Electricity"],
+    // Chemistry: ["Atoms", "Reactions", "Periodic Table", "Bonds", "Acids"],
+    // Biology: ["Cells", "Genetics", "Reproduction", "Plants", "Evolution"],
+    // "Computer Science": ["HTML", "CSS", "JavaScript", "Data Structures", "Algorithms"]
   };
 
   const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
