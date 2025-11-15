@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mini Project - To‑Do List</title>
+<title>Mini Project - To-Do List</title>
+
 <style>
-  /* Color theme same as previous mini‑project */
+  /* Color theme same as previous mini-project */
   :root {
     --bg-1: #0f2027;
     --bg-2: #203a43;
@@ -91,14 +92,19 @@
     border-radius: 8px;
     margin-bottom: 10px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
     transition: 0.3s ease;
   }
 
-  li.completed {
+  li.completed span {
     text-decoration: line-through;
     opacity: 0.6;
+  }
+
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .actions button {
@@ -117,9 +123,10 @@
   }
 </style>
 </head>
+
 <body>
   <div class="todo-container">
-    <h2>To‑Do List</h2>
+    <h2>To-Do List</h2>
 
     <div class="input-section">
       <input type="text" id="taskInput" placeholder="Enter a new task..." />
@@ -131,6 +138,24 @@
   </div>
 
 <script>
+  const taskList = document.getElementById("taskList");
+
+  // ------------ SAVE TO LOCAL STORAGE ------------
+  function saveTasks() {
+    localStorage.setItem("tasks", taskList.innerHTML);
+  }
+
+  // ------------ LOAD FROM LOCAL STORAGE ------------
+  function loadTasks() {
+    const data = localStorage.getItem("tasks");
+    if (data) {
+      taskList.innerHTML = data;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadTasks);
+
+  // ------------------------------------------------
   function addTask() {
     const input = document.getElementById("taskInput");
     const taskText = input.value.trim();
@@ -141,35 +166,1000 @@
     const li = document.createElement("li");
 
     li.innerHTML = `
-      <span onclick=\"toggleComplete(this)\">${taskText}</span>
-      <small style=\"display:block; opacity:0.8; margin-top:4px; font-size:12px; color:var(--accent1)\">Deadline: ${deadline || "Not set"}</small>
-      <div class=\"actions\">
-        <button onclick=\"editTask(this)\">Edit</button>
-        <button onclick=\"deleteTask(this)\">Delete</button>
+      <div class="task-header">
+        <span onclick="toggleComplete(this)">${taskText}</span>
+        <div class="actions">
+          <button onclick="editTask(this)">Edit</button>
+          <button onclick="deleteTask(this)">Delete</button>
+        </div>
       </div>
+      <small style="opacity:0.8; margin-top:4px; font-size:12px; color:var(--accent1)">
+        Deadline: ${deadline || "Not set"}
+      </small>
     `;
 
-    document.getElementById("taskList").appendChild(li);
+    taskList.appendChild(li);
     input.value = "";
+
+    saveTasks();
   }
 
   function toggleComplete(task) {
-    task.parentElement.classList.toggle("completed");
+    task.parentElement.parentElement.classList.toggle("completed");
+    saveTasks();
   }
 
   function deleteTask(btn) {
-    btn.parentElement.parentElement.remove();
+    btn.parentElement.parentElement.parentElement.remove();
+    saveTasks();
   }
 
   function editTask(btn) {
-    const li = btn.parentElement.parentElement;
+    const li = btn.parentElement.parentElement.parentElement;
     const currentText = li.querySelector("span").innerText;
     const newText = prompt("Edit your task:", currentText);
 
     if (newText !== null && newText.trim() !== "") {
       li.querySelector("span").innerText = newText;
+      saveTasks();
     }
   }
 </script>
+
+</body>
+</html> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mini Project - To-Do Dashboard</title>
+
+<style>
+  :root {
+    --bg-1: #0f2027;
+    --bg-2: #203a43;
+    --bg-3: #2c5364;
+    --glass: rgba(255, 255, 255, 0.08);
+    --accent1: #9c8cff;
+    --accent2: #7b61ff;
+    --text-light: #ffffff;
+    --muted: #cbd5f5;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    background: linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    color: var(--text-light);
+  }
+
+  .todo-container {
+    width: 100%;
+    max-width: 900px;
+    background: var(--glass);
+    backdrop-filter: blur(16px);
+    padding: 26px 26px 30px;
+    border-radius: 22px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.6);
+  }
+
+  .todo-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-size: 26px;
+    color: var(--accent1);
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .sort-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .sort-wrapper select {
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(15, 32, 39, 0.7);
+    color: var(--text-light);
+    font-size: 12px;
+    outline: none;
+  }
+
+  .input-section {
+    display: grid;
+    grid-template-columns: 2.2fr 1.3fr 1.2fr auto;
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  .input-section input,
+  .input-section select {
+    padding: 11px 13px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+  }
+
+  .input-section select {
+    cursor: pointer;
+  }
+
+  .input-section button {
+    background: linear-gradient(45deg, var(--accent1), var(--accent2));
+    border: none;
+    padding: 11px 16px;
+    border-radius: 10px;
+    color: var(--text-light);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.25s ease;
+    white-space: nowrap;
+  }
+
+  .input-section button:hover {
+    transform: translateY(-1px) scale(1.03);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+
+  .content {
+    display: grid;
+    grid-template-columns: 1.1fr 1.1fr;
+    gap: 22px;
+    margin-top: 22px;
+  }
+
+  /* TASK LIST */
+  .tasks-section {
+    border-right: 1px solid rgba(255, 255, 255, 0.18);
+    padding-right: 15px;
+  }
+
+  ul {
+    list-style: none;
+    margin-top: 12px;
+    max-height: 340px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+
+  ul::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  ul::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+  }
+
+  li {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 11px 12px;
+    border-radius: 11px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+    transition: 0.25s ease;
+  }
+
+  li:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+  }
+
+  li.completed .task-text {
+    text-decoration: line-through;
+    opacity: 0.6;
+  }
+
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .task-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .task-text {
+    font-size: 14px;
+    cursor: pointer;
+    word-break: break-word;
+  }
+
+  .task-check {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--accent1);
+  }
+
+  .task-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .priority-pill {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    white-space: nowrap;
+  }
+
+  .priority-High {
+    background: rgba(255, 99, 132, 0.18);
+    border-color: rgba(255, 99, 132, 0.6);
+    color: #ff6b81;
+  }
+
+  .priority-Medium {
+    background: rgba(255, 206, 86, 0.16);
+    border-color: rgba(255, 206, 86, 0.6);
+    color: #ffd166;
+  }
+
+  .priority-Low {
+    background: rgba(75, 192, 192, 0.18);
+    border-color: rgba(75, 192, 192, 0.6);
+    color: #6ee7b7;
+  }
+
+  .deadline {
+    opacity: 0.85;
+    margin-top: 4px;
+    font-size: 11px;
+    color: var(--accent1);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+  }
+
+  .actions button {
+    margin-left: 6px;
+    background: transparent;
+    border: 1px solid var(--accent1);
+    padding: 4px 9px;
+    border-radius: 999px;
+    color: var(--text-light);
+    cursor: pointer;
+    font-size: 11px;
+    transition: 0.25s ease;
+  }
+
+  .actions button:hover {
+    background: var(--accent1);
+  }
+
+  /* ANALYTICS SECTION */
+  .analytics {
+    padding-left: 8px;
+  }
+
+  .analytics-top {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .summary-wrapper h3 {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  #summaryText {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* PROGRESS RING */
+  .progress-ring {
+    width: 110px;
+    height: 110px;
+    position: relative;
+  }
+
+  .progress-ring-svg {
+    transform: rotate(-90deg);
+  }
+
+  .progress-ring-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 10;
+  }
+
+  .progress-ring-circle {
+    fill: none;
+    stroke: url(#gradRing);
+    stroke-width: 10;
+    stroke-linecap: round;
+    stroke-dasharray: 326;
+    stroke-dashoffset: 326;
+    transition: stroke-dashoffset 0.6s ease;
+  }
+
+  .progress-ring-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #progressPercent {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .progress-ring-center small {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  /* CHARTS */
+  .charts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  .chart-wrapper {
+    flex: 1 1 210px;
+    max-width: 260px;
+  }
+
+  canvas {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  /* HEATMAP */
+  .heatmap-section {
+    margin-top: 14px;
+  }
+
+  .heatmap-section h4 {
+    font-size: 13px;
+    margin-bottom: 6px;
+    color: var(--muted);
+  }
+
+  .heatmap-grid {
+    display: flex;
+    gap: 5px;
+  }
+
+  .heat-cell {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    position: relative;
+  }
+
+  .heat-cell.level-0 { background: rgba(255, 255, 255, 0.06); }
+  .heat-cell.level-1 { background: rgba(124, 196, 255, 0.35); }
+  .heat-cell.level-2 { background: rgba(80, 184, 255, 0.6); }
+  .heat-cell.level-3 { background: rgba(43, 166, 255, 0.85); }
+  .heat-cell.level-4 { background: rgba(0, 255, 179, 0.9); }
+
+  .heat-cell::after {
+    content: attr(data-day);
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    color: var(--muted);
+  }
+
+/* ============================= */
+/* 📱 FULL RESPONSIVENESS REWORK */
+/* ============================= */
+
+/* --- Tablets & Medium Screens (max 1024px) --- */
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .tasks-section {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+
+  .analytics {
+    padding-left: 0;
+  }
+
+  .input-section {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+/* --- Tablets (max 820px) --- */
+@media (max-width: 820px) {
+  .input-section {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* --- Mobile Large (max 650px) --- */
+@media (max-width: 650px) {
+  .todo-container {
+    padding: 20px 16px 26px;
+  }
+
+  .todo-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .sort-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .input-section {
+    grid-template-columns: 1fr;
+  }
+
+  .input-section button {
+    width: 100%;
+  }
+
+  .charts {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .chart-wrapper {
+    max-width: 300px;
+    width: 100%;
+  }
+}
+
+/* --- Mobile Medium (max 480px) --- */
+@media (max-width: 480px) {
+  h2 {
+    font-size: 22px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+  }
+
+  .progress-ring {
+    width: 90px;
+    height: 90px;
+  }
+
+  #progressPercent {
+    font-size: 18px;
+  }
+
+  .analytics-top {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .task-right {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .priority-pill {
+    font-size: 10px;
+  }
+}
+
+/* --- Mobile Small (max 360px) --- */
+@media (max-width: 360px) {
+  .task-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .task-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .analytics-top {
+    gap: 12px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+  <div class="todo-container">
+    <div class="todo-header-row">
+      <div>
+        <h2>To-Do Dashboard</h2>
+        <p class="subtitle">Plan tasks, track priorities, and visualize your performance.</p>
+      </div>
+      <div class="sort-wrapper">
+        <label for="sortSelect">Sort by:</label>
+        <select id="sortSelect" onchange="changeSort()">
+          <option value="default">Newest first</option>
+          <option value="completedFirst">Completed first</option>
+          <option value="pendingFirst">Pending first</option>
+          <option value="deadlineSoon">Deadline soonest</option>
+          <option value="priorityHigh">Priority (High → Low)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="input-section">
+      <input type="text" id="taskInput" placeholder="Enter a new task..." />
+      <input type="date" id="deadlineInput" />
+      <select id="priorityInput">
+        <option value="Medium" selected>Priority: Medium</option>
+        <option value="High">Priority: High</option>
+        <option value="Low">Priority: Low</option>
+      </select>
+      <button onclick="addTask()">Add Task</button>
+    </div>
+
+    <div class="content">
+      <!-- TASKS -->
+      <div class="tasks-section">
+        <ul id="taskList"></ul>
+      </div>
+
+      <!-- ANALYTICS -->
+      <div class="analytics">
+        <div class="analytics-top">
+          <!-- Progress Ring -->
+          <div class="progress-ring">
+            <svg class="progress-ring-svg" viewBox="0 0 120 120">
+              <defs>
+                <linearGradient id="gradRing" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#9c8cff" />
+                  <stop offset="100%" stop-color="#00ffb3" />
+                </linearGradient>
+              </defs>
+              <circle class="progress-ring-bg" cx="60" cy="60" r="52"></circle>
+              <circle class="progress-ring-circle" cx="60" cy="60" r="52"></circle>
+            </svg>
+            <div class="progress-ring-center">
+              <span id="progressPercent">0%</span>
+              <small>Completed</small>
+            </div>
+          </div>
+
+          <div class="summary-wrapper">
+            <h3>Performance Overview</h3>
+            <p id="summaryText">No tasks yet. Start by adding your first task!</p>
+          </div>
+        </div>
+
+        <div class="charts">
+          <div class="chart-wrapper">
+            <canvas id="pieChart"></canvas>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div>
+
+        <div class="heatmap-section">
+          <h4>Last 7 days activity</h4>
+          <div id="heatmapGrid" class="heatmap-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+  // --------- DATA MODEL ---------
+  let tasks = [];
+  let completionHistory = {}; // { "YYYY-MM-DD": count }
+  let currentSort = "default";
+
+  const taskListEl = document.getElementById("taskList");
+  const summaryTextEl = document.getElementById("summaryText");
+  const progressPercentEl = document.getElementById("progressPercent");
+  const heatmapGridEl = document.getElementById("heatmapGrid");
+  const progressCircle = document.querySelector(".progress-ring-circle");
+
+  const CIRCUMFERENCE = 326; // for r=52
+
+  // --------- HELPERS ---------
+  function formatDate(date) {
+    return date.toISOString().slice(0, 10); // YYYY-MM-DD
+  }
+
+  function todayKey() {
+    return formatDate(new Date());
+  }
+
+  function saveToStorage() {
+    localStorage.setItem("tasks_v2", JSON.stringify(tasks));
+    localStorage.setItem("completionHistory_v1", JSON.stringify(completionHistory));
+  }
+
+  function loadFromStorage() {
+    const tasksJson = localStorage.getItem("tasks_v2");
+    const historyJson = localStorage.getItem("completionHistory_v1");
+
+    tasks = tasksJson ? JSON.parse(tasksJson) : [];
+    completionHistory = historyJson ? JSON.parse(historyJson) : {};
+
+    // If no history but some completed tasks exist, put them on today
+    if (!historyJson && tasks.length > 0) {
+      let completedCount = tasks.filter(t => t.completed).length;
+      if (completedCount > 0) {
+        completionHistory[todayKey()] = completedCount;
+      }
+    }
+
+    renderAll();
+  }
+
+  // --------- TASK OPERATIONS ---------
+  function addTask() {
+    const textInput = document.getElementById("taskInput");
+    const deadlineInput = document.getElementById("deadlineInput");
+    const priorityInput = document.getElementById("priorityInput");
+
+    const text = textInput.value.trim();
+    const deadline = deadlineInput.value;
+    const priorityValue = priorityInput.value.replace("Priority: ", "") || "Medium";
+
+    if (!text) return;
+
+    const newTask = {
+      id: Date.now().toString(),
+      text,
+      deadline: deadline || "",
+      priority: priorityValue,
+      completed: false,
+      createdAt: new Date().toISOString()
+    };
+
+    tasks.push(newTask);
+
+    textInput.value = "";
+    deadlineInput.value = "";
+    priorityInput.value = "Medium";
+
+    saveToStorage();
+    renderAll();
+  }
+
+  function getSortedTasks() {
+    const arr = [...tasks];
+
+    switch (currentSort) {
+      case "completedFirst":
+        arr.sort((a, b) => Number(b.completed) - Number(a.completed));
+        break;
+      case "pendingFirst":
+        arr.sort((a, b) => Number(a.completed) - Number(b.completed));
+        break;
+      case "deadlineSoon":
+        arr.sort((a, b) => {
+          if (!a.deadline && !b.deadline) return 0;
+          if (!a.deadline) return 1;
+          if (!b.deadline) return -1;
+          return new Date(a.deadline) - new Date(b.deadline);
+        });
+        break;
+      case "priorityHigh":
+        const order = { "High": 0, "Medium": 1, "Low": 2 };
+        arr.sort((a, b) => order[a.priority] - order[b.priority]);
+        break;
+      default:
+        // newest first by createdAt
+        arr.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    }
+
+    return arr;
+  }
+
+  function renderTasks() {
+    taskListEl.innerHTML = "";
+    const sorted = getSortedTasks();
+
+    sorted.forEach(task => {
+      const li = document.createElement("li");
+      if (task.completed) li.classList.add("completed");
+
+      const deadlineLabel = task.deadline ? task.deadline : "Not set";
+
+      li.innerHTML = `
+        <div class="task-header">
+          <div class="task-left">
+            <input type="checkbox"
+                   class="task-check"
+                   ${task.completed ? "checked" : ""}
+                   onclick="toggleTaskCompleted('${task.id}')">
+            <span class="task-text" onclick="toggleTaskCompleted('${task.id}')">
+              ${task.text}
+            </span>
+          </div>
+          <div class="task-right">
+            <span class="priority-pill priority-${task.priority}">
+              ${task.priority}
+            </span>
+            <div class="actions">
+              <button onclick="editTask('${task.id}')">Edit</button>
+              <button onclick="deleteTask('${task.id}')">Delete</button>
+            </div>
+          </div>
+        </div>
+        <small class="deadline">
+          Deadline: ${deadlineLabel}
+        </small>
+      `;
+
+      taskListEl.appendChild(li);
+    });
+  }
+
+  function toggleTaskCompleted(id) {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    const wasCompleted = task.completed;
+    task.completed = !task.completed;
+
+    // Update history only if state actually changes
+    if (!wasCompleted && task.completed) {
+      addCompletionForToday();
+    } else if (wasCompleted && !task.completed) {
+      removeCompletionForToday();
+    }
+
+    saveToStorage();
+    renderAll();
+  }
+
+  function deleteTask(id) {
+    tasks = tasks.filter(t => t.id !== id);
+    // For simplicity, we don't adjust history when deleting
+    saveToStorage();
+    renderAll();
+  }
+
+  function editTask(id) {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    const newText = prompt("Edit your task:", task.text);
+
+    if (newText !== null && newText.trim() !== "") {
+      task.text = newText.trim();
+      saveToStorage();
+      renderAll();
+    }
+  }
+
+  function changeSort() {
+    const sortSelect = document.getElementById("sortSelect");
+    currentSort = sortSelect.value;
+    renderTasks();    // Only tasks need re-render; analytics based on same data
+    updateSummary();
+    updateCharts();
+    updateHeatmap();
+  }
+
+  // --------- SUMMARY & PROGRESS RING ---------
+  function updateSummary() {
+    const total = tasks.length;
+    const completed = tasks.filter(t => t.completed).length;
+    const pending = total - completed;
+    const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+
+    if (total === 0) {
+      summaryTextEl.textContent = "No tasks yet. Start by adding your first task!";
+    } else {
+      summaryTextEl.textContent =
+        `You have completed ${completed} out of ${total} tasks (${percent}% done). ` +
+        `Pending: ${pending}.`;
+    }
+
+    // Progress ring
+    const offset = CIRCUMFERENCE - (percent / 100) * CIRCUMFERENCE;
+    progressCircle.style.strokeDashoffset = offset;
+    progressPercentEl.textContent = percent + "%";
+  }
+
+  // --------- CHARTS ---------
+  let pieChartInstance = null;
+  let barChartInstance = null;
+
+  function updateCharts() {
+    const completed = tasks.filter(t => t.completed).length;
+    const pending = tasks.length - completed;
+
+    const pieCtx = document.getElementById("pieChart").getContext("2d");
+    const barCtx = document.getElementById("barChart").getContext("2d");
+
+    if (pieChartInstance) pieChartInstance.destroy();
+    if (barChartInstance) barChartInstance.destroy();
+
+    pieChartInstance = new Chart(pieCtx, {
+      type: "pie",
+      data: {
+        labels: ["Completed", "Pending"],
+        datasets: [{
+          data: [completed, pending],
+          backgroundColor: [
+            "rgba(123, 97, 255, 0.9)",
+            "rgba(156, 140, 255, 0.7)"
+          ],
+          borderColor: [
+            "rgba(255, 255, 255, 0.9)",
+            "rgba(255, 255, 255, 0.8)"
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: "#ffffff",
+              font: { size: 12 }
+            }
+          }
+        }
+      }
+    });
+
+    barChartInstance = new Chart(barCtx, {
+      type: "bar",
+      data: {
+        labels: ["Completed", "Pending"],
+        datasets: [{
+          label: "Tasks",
+          data: [completed, pending],
+          backgroundColor: [
+            "rgba(123, 97, 255, 0.9)",
+            "rgba(156, 140, 255, 0.7)"
+          ],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        scales: {
+          x: {
+            ticks: { color: "#ffffff", font: { size: 12 } },
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: { color: "#ffffff", precision: 0 },
+            grid: { color: "rgba(255, 255, 255, 0.1)" }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: "#ffffff",
+              font: { size: 12 }
+            }
+          }
+        }
+      }
+    });
+  }
+
+  // --------- COMPLETION HISTORY & HEATMAP ---------
+  function addCompletionForToday() {
+    const key = todayKey();
+    if (!completionHistory[key]) completionHistory[key] = 0;
+    completionHistory[key]++;
+  }
+
+  function removeCompletionForToday() {
+    const key = todayKey();
+    if (!completionHistory[key]) return;
+    completionHistory[key] = Math.max(0, completionHistory[key] - 1);
+  }
+
+  function updateHeatmap() {
+    const daysToShow = 7;
+    const today = new Date();
+    heatmapGridEl.innerHTML = "";
+
+    for (let i = daysToShow - 1; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(today.getDate() - i);
+
+      const key = formatDate(d);
+      const count = completionHistory[key] || 0;
+
+      let level = 0;
+      if (count === 0) level = 0;
+      else if (count === 1) level = 1;
+      else if (count <= 3) level = 2;
+      else if (count <= 5) level = 3;
+      else level = 4;
+
+      const dayLabel = d.toLocaleDateString("en-IN", { weekday: "short" }).slice(0, 2);
+
+      const cell = document.createElement("div");
+      cell.className = `heat-cell level-${level}`;
+      cell.title = `${key}: ${count} task(s) completed`;
+      cell.setAttribute("data-day", dayLabel);
+
+      heatmapGridEl.appendChild(cell);
+    }
+
+    saveToStorage(); // persist any new history keys
+  }
+
+  // --------- RENDER ALL ---------
+  function renderAll() {
+    renderTasks();
+    updateSummary();
+    updateCharts();
+    updateHeatmap();
+  }
+
+  // --------- INIT ---------
+  document.addEventListener("DOMContentLoaded", loadFromStorage);
+</script>
+
 </body>
 </html>
