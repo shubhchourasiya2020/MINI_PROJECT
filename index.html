@@ -8,7 +8,6 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 </head>
 <body>
 
@@ -30,9 +29,17 @@
         </li>
       </ul>
     </nav>
-    <div class="login-btn">
-      <a href="index_login.html" target="_blank" class="btn">Login</a>
-    </div>
+
+   <li id="loginNavItem">
+  <a href="login.html" class="login-btn btn-primary">Login</a>
+</li>
+
+<li id="profileNavItem" style="display:none;">
+  <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" 
+       alt="Profile" class="profile-icon">
+</li>
+
+
   </header>
 
   <section class="hero">
@@ -213,6 +220,44 @@
     <li><a href="mailto:example@gmail.com" aria-label="Email"><i class="bi bi-envelope-fill"></i></a></li>
   </ul>
 </footer>
+
+
+<!-- 🔥 PASTE THIS SCRIPT HERE 🔥 -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBEEtsWKeYxs4Ft6LrAyw3K4Gkfugq8wAY",
+    authDomain: "student-performance-trac-5327d.firebaseapp.com",
+    projectId: "student-performance-trac-5327d",
+    storageBucket: "student-performance-trac-5327d.firebasestorage.app",
+    messagingSenderId: "260306341156",
+    appId: "1:260306341156:web:e47a56419434bf2f41b7b1",
+    measurementId: "G-EWWZWM4BV7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const loginNavItem = document.getElementById("loginNavItem");
+  const profileNavItem = document.getElementById("profileNavItem");
+  const profileImg = document.querySelector("#profileNavItem img");
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      loginNavItem.style.display = "none";
+      profileNavItem.style.display = "block";
+
+      if (user.photoURL) {
+        profileImg.src = user.photoURL;
+      }
+    } else {
+      loginNavItem.style.display = "block";
+      profileNavItem.style.display = "none";
+    }
+  });
+</script>
 
 
 
